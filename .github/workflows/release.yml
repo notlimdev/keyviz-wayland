@@ -20,6 +20,9 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Install cargo-tauri
+        run: cargo install tauri-cli --locked
+
       - name: Install dependencies
         run: |
           sudo apt-get update
