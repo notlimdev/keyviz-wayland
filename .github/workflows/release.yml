@@ -32,13 +32,18 @@ jobs:
       - name: Install frontend deps
         run: npm install
 
-      - name: Build Tauri app
-        uses: tauri-apps/tauri-action@v0
+      - name: Build frontend
+        run: npm run build
+
+      - name: Build Tauri binary
+        run: cargo tauri build --no-bundle
+        working-directory: src-tauri
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: src-tauri/target/release/keyviz-wayland-tauri
+          name: "Release ${{ github.ref_name }}"
+          body: "Release ${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: ${{ github.ref_name }}
-          releaseName: "v__VERSION__"
-          releaseBody: "Release v__VERSION__"
-          releaseDraft: false
-          prerelease: false
